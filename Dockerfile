@@ -37,5 +37,6 @@ RUN printf "$(cat includes/config.JTL-Shop.ini.php)"  \
 
 
 RUN ["chown", "-R", "www-data:www-data", "../html"]
+RUN ["rm", "includes/config.JTL-Shop.ini.initial.php"]
 
-EXPOSE 80
+CMD if [ "$ADD_DEMO_DATA" = "true" ] ; then php cli generate:demodata ; fi && bash
