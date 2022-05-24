@@ -26,6 +26,16 @@ RUN pecl install imagick && docker-php-ext-enable imagick
 
 COPY --from=0 /app/core ./
 
+ENV DATABASE_USER=root DATABASE_PASS=root DATABASE_HOST=host.docker.internal DATABASE_SOCKET=/var/run/mysqld/mysqld.sock
+ENV DATABASE_DATABASE=database ADMIN_USER=admin ADMIN_PASS=password ADD_DEMO_DATA=false SHOP_URL=localhost
+
+COPY config.JTL-Shop.ini.php includes/
+
+RUN printf "$(cat includes/config.JTL-Shop.ini.php)"  \
+    $SHOP_URL $DATABASE_HOST $DATABASE_DATABASE $ADMIN_USER $DATABASE_PASS $DATABASE_SOCKET  \
+    > includes/config.JTL-Shop.ini.php
+
+
 RUN ["chown", "-R", "www-data:www-data", "../html"]
 
 EXPOSE 80
