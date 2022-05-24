@@ -1,5 +1,5 @@
 <?php
-define('PFAD_ROOT', '/var/www/html/shopname/');
+define('PFAD_ROOT', '/var/www/html/');
 define('URL_SHOP', '%s');
 
 define('DB_HOST', '%s');
