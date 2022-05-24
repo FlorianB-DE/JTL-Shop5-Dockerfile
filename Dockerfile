@@ -5,9 +5,6 @@ RUN sh -c "tar -xzf *.tar.gz"
 RUN sh -c "rm *.tar.gz"
 RUN sh -c "mv core* core"
 
-
-COPY install core/install
-
 WORKDIR /app/core/includes
 
 RUN ["composer", "--ignore-platform-req=ext-bcmath", "--ignore-platform-req=ext-gd", "--ignore-platform-req=ext-intl", "--ignore-platform-req=ext-soap", "update"]
