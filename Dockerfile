@@ -1,4 +1,4 @@
-FROM composer:latest
+FROM composer:2.0.14
 
 ADD https://gitlab.com/jtl-software/jtl-shop/core/-/archive/v5.1.2/core-v5.1.2.tar.gz /app
 RUN sh -c "tar -xzf *.tar.gz"
