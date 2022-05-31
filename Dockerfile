@@ -13,7 +13,10 @@ RUN ["composer", "--ignore-platform-req=ext-bcmath", "--ignore-platform-req=ext-
 
 FROM php:8.0-rc-apache-bullseye
 
-RUN apt update && apt upgrade -y && apt autoremove -y && apt install -y libfreetype6-dev libjpeg62-turbo-dev libpng-dev\
+ENV DATABASE_USER=root DATABASE_PASS=root DATABASE_HOST=host.docker.internal DATABASE_SOCKET=/var/run/mysqld/mysqld.sock
+ENV DATABASE_DATABASE=database ADMIN_USER=admin ADMIN_PASS=password ADD_DEMO_DATA=false SHOP_URL=localhost
+
+RUN apt update && apt install -y libfreetype6-dev libjpeg62-turbo-dev libpng-dev\
     libicu-dev libxml2-dev libzip-dev zip libmagickwand-dev
 
 COPY php.ini /usr/local/etc/php/php.ini
@@ -26,24 +29,15 @@ RUN pecl install imagick && docker-php-ext-enable imagick
 
 COPY --from=0 /app/core ./
 
-ARG DATABASE_USER=root
-ARG DATABASE_PASS=root
-ARG DATABASE_HOST=host.docker.internal
-ARG DATABASE_SOCKET=/var/run/mysqld/mysqld.sock
-ARG DATABASE_DATABASE=database
-ARG ADMIN_USER=admin
-ARG ADMIN_PASS=password
-ARG ADD_DEMO_DATA=false
-ARG SHOP_URL=localhost
-
 COPY config.JTL-Shop.ini.php includes/
-
-RUN printf "$(cat includes/config.JTL-Shop.ini.php)"  \
-    $SHOP_URL $DATABASE_HOST $DATABASE_DATABASE $DATABASE_USER $DATABASE_PASS $DATABASE_SOCKET  \
-    > includes/config.JTL-Shop.ini.php
 
 
 RUN ["chown", "-R", "www-data:www-data", "../html"]
 RUN ["rm", "includes/config.JTL-Shop.ini.initial.php"]
 
-CMD if [ "$ADD_DEMO_DATA" = "true" ] ; then php cli generate:demodata ; fi && apachectl -D FOREGROUND
+
+
+CMD printf "$(cat includes/config.JTL-Shop.ini.php)"  \
+    $SHOP_URL $DATABASE_HOST $DATABASE_DATABASE $DATABASE_USER $DATABASE_PASS $DATABASE_SOCKET  \
+    > includes/config.JTL-Shop.ini.php && \
+    if [ "$ADD_DEMO_DATA" = "true" ] ; then php cli generate:demodata ; fi && apachectl -D FOREGROUND
