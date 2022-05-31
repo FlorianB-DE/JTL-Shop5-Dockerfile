@@ -38,5 +38,5 @@ RUN ["rm", "includes/config.JTL-Shop.ini.initial.php"]
 
 
 CMD printf "$(cat includes/config.JTL-Shop.ini.php)"  \
-    $SHOP_URL $DATABASE_HOST $DATABASE_DATABASE $DATABASE_USER $DATABASE_PASS includes/config.JTL-Shop.ini.php && \
+    $SHOP_URL $DATABASE_HOST $DATABASE_DATABASE $DATABASE_USER $DATABASE_PASS > includes/config.JTL-Shop.ini.php && \
     if [ "$ADD_DEMO_DATA" = "true" ] ; then php cli generate:demodata ; fi && apachectl -D FOREGROUND
