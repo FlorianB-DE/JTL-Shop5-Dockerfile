@@ -32,11 +32,11 @@ ENV DATABASE_DATABASE=database ADMIN_USER=admin ADMIN_PASS=password ADD_DEMO_DAT
 COPY config.JTL-Shop.ini.php includes/
 
 RUN printf "$(cat includes/config.JTL-Shop.ini.php)"  \
-    $SHOP_URL $DATABASE_HOST $DATABASE_DATABASE $ADMIN_USER $DATABASE_PASS $DATABASE_SOCKET  \
+    $SHOP_URL $DATABASE_HOST $DATABASE_DATABASE $DATABASE_USER $DATABASE_PASS $DATABASE_SOCKET  \
     > includes/config.JTL-Shop.ini.php
 
 
 RUN ["chown", "-R", "www-data:www-data", "../html"]
 RUN ["rm", "includes/config.JTL-Shop.ini.initial.php"]
 
-CMD if [ "$ADD_DEMO_DATA" = "true" ] ; then php cli generate:demodata ; fi && bash
+CMD if [ "$ADD_DEMO_DATA" = "true" ] ; then php cli generate:demodata ; fi && apachectl -D FOREGROUND
