@@ -14,7 +14,7 @@ RUN ["composer", "--ignore-platform-req=ext-bcmath", "--ignore-platform-req=ext-
 FROM php:8.0-rc-apache-bullseye
 
 ENV DATABASE_USER=root DATABASE_PASS=root DATABASE_HOST=host.docker.internal
-ENV DATABASE_DATABASE=database ADMIN_USER=admin ADMIN_PASS=password ADD_DEMO_DATA=false SHOP_URL=localhost
+ENV DATABASE_DATABASE=database ADMIN_USER=admin ADMIN_PASS=password ADD_DEMO_DATA=false SHOP_URL=http://localhost
 
 RUN apt update && apt install -y libfreetype6-dev libjpeg62-turbo-dev libpng-dev\
     libicu-dev libxml2-dev libzip-dev zip libmagickwand-dev
