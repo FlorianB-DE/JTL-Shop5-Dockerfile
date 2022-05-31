@@ -6,7 +6,6 @@ define('DB_HOST', '%s');
 define('DB_NAME', '%s');
 define('DB_USER', '%s');
 define('DB_PASS', '%s');
-define('DB_SOCKET', '%s');
 
 define('BLOWFISH_KEY', '123456789123456789123456');
 

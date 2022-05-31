@@ -13,7 +13,7 @@ RUN ["composer", "--ignore-platform-req=ext-bcmath", "--ignore-platform-req=ext-
 
 FROM php:8.0-rc-apache-bullseye
 
-ENV DATABASE_USER=root DATABASE_PASS=root DATABASE_HOST=host.docker.internal DATABASE_SOCKET=/var/run/mysqld/mysqld.sock
+ENV DATABASE_USER=root DATABASE_PASS=root DATABASE_HOST=host.docker.internal
 ENV DATABASE_DATABASE=database ADMIN_USER=admin ADMIN_PASS=password ADD_DEMO_DATA=false SHOP_URL=localhost
 
 RUN apt update && apt install -y libfreetype6-dev libjpeg62-turbo-dev libpng-dev\
@@ -38,6 +38,5 @@ RUN ["rm", "includes/config.JTL-Shop.ini.initial.php"]
 
 
 CMD printf "$(cat includes/config.JTL-Shop.ini.php)"  \
-    $SHOP_URL $DATABASE_HOST $DATABASE_DATABASE $DATABASE_USER $DATABASE_PASS $DATABASE_SOCKET  \
-    > includes/config.JTL-Shop.ini.php && \
+    $SHOP_URL $DATABASE_HOST $DATABASE_DATABASE $DATABASE_USER $DATABASE_PASS includes/config.JTL-Shop.ini.php && \
     if [ "$ADD_DEMO_DATA" = "true" ] ; then php cli generate:demodata ; fi && apachectl -D FOREGROUND
